@@ -81,6 +81,7 @@ public class GetData {
         }
 
         Graph g = new Graph(m,n,monsters,candies,initLab,positions);
+        g.printGraph();
 
     }
 }

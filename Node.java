@@ -7,10 +7,15 @@ public class Node{
   // '#' pour traversé, 'S' pour la sortie
   private List<Node> neighbours;
 
+  private int coordI;
+  private int coordJ;
 
-  public Node(){
+
+  public Node(int i, int j){
     this.status =" ";
     this.neighbours= new ArrayList<Node>();
+    this.coordJ=j;
+    this.coordI=i;
   }
   public void addNeighbour(Node n){
     if (!(this.neighbours.contains(n))){
@@ -25,6 +30,10 @@ public class Node{
 
   public int getNbrOfNeighbours(){
     return this.neighbours.size();
+  }
+
+  public int arc(Node n){
+    return 1;
   }
 
   //public void toString(){

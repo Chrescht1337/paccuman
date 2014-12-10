@@ -14,11 +14,11 @@ public class Graph{
     this.n=n;
     this.monsters=monsters;
     this.candies=candies;
-    this.graphNodes=new Node[this.n][this.m];
+    this.graphNodes=new Node[this.m][this.n];
      for (int i=0;i<m;i++)
        for (int j=0;j<n;j++)
-         this.graphNodes[i][j]=new Node();
-    this.exit = new Node();
+         this.graphNodes[i][j]=new Node(i,j);
+    this.exit = new Node(this.m,this.n);
     this.positions=positions;
     labScan(labyrinth);
 
@@ -120,8 +120,12 @@ public class Graph{
   }
 
   public void printGraph(){
-    for (int i=0;i<this.m;i++)
-      for (int j=0;j<this.n;j++)
+    for (int i=0;i<this.m;i++){
+      for (int j=0;j<this.n;j++){
         System.out.print(this.graphNodes[i][j].getNbrOfNeighbours());
-  }
+				System.out.print(" ");
+			}
+  		System.out.println();
+		}
+	}
 }
