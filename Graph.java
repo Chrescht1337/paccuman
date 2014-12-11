@@ -3,8 +3,8 @@ import java.io.*;
 public class Graph{
   private int monsters;
   private int candies;
-  private int n;
-  private int m;
+  private int m;		//nbre de lignes
+  private int n;		//nbre de colonnes
   private Node[][] graphNodes;  //le graphe représenté en fonction de noeuds
   private Node exit;
   private int[][] positions;
@@ -53,56 +53,26 @@ public class Graph{
     }
   }
   private void connectNodes(int i,int j,int decal){
-    // if ((i==1) && (decal==3)) //premiere ligne sortie
-    // {
-    //   this.exit.addNeighbour(this.graphNodes[i][j]);
-    // }
-    // else if ((j==2) && (decal==0)) // sortie = premiere colonne
-    // {
-    //   this.exit.addNeighbour(this.graphNodes[i][j]);
-    // }
-    // else if ((i==m-1) && (decal==2)) // derniere ligne
-    // {
-    //   this.exit.addNeighbour(this.graphNodes[i][j]);
-    // }
-    // else if ((j==n-1) && (decal==1))//sortie = dernière colonne
-    // {
-    //   this.exit.addNeighbour(this.graphNodes[i][j]);
-    // }
-    // else
-    // {
-      switch(decal){
-        case 0://colonne gauche
-          // System.out.println(0);
-          // System.out.println(i);
-          // System.out.println(j);
-          if (!(exitFound(i,j-1)))
-            this.graphNodes[i][j].addNeighbour(this.graphNodes[i][j-1]);
-        break;
-        case 1://colonne droite
-          // System.out.println(1);
-          // System.out.println(i);
-          // System.out.println(j);
-          if (!(exitFound(i,j+1)))
-            this.graphNodes[i][j].addNeighbour(this.graphNodes[i][j+1]);
-        break;
-        case 2://ligne supérieure
-          // System.out.println(2);
-          // System.out.println(i);
-          // System.out.println(j);
-          if (!(exitFound(i-1,j)))
-            this.graphNodes[i][j].addNeighbour(this.graphNodes[i-1][j]);
-        break;
-        case 3://ligne inférieure
-          // System.out.println(3);
-          // System.out.println(i);
-          // System.out.println(j);
-          if (!(exitFound(i+1,j)))
-            this.graphNodes[i][j].addNeighbour(this.graphNodes[i+1][j]);
-        break;
-      }
-    //}
+    switch(decal){
+      case 0://colonne gauche
+        if (!(exitFound(i,j-1)))
+          this.graphNodes[i][j].addNeighbour(this.graphNodes[i][j-1]);
+      break;
+      case 1://colonne droite
+        if (!(exitFound(i,j+1)))
+          this.graphNodes[i][j].addNeighbour(this.graphNodes[i][j+1]);
+      break;
+      case 2://ligne supérieure
+        if (!(exitFound(i-1,j)))
+          this.graphNodes[i][j].addNeighbour(this.graphNodes[i-1][j]);
+      break;
+      case 3://ligne inférieure
+        if (!(exitFound(i+1,j)))
+          this.graphNodes[i][j].addNeighbour(this.graphNodes[i+1][j]);
+      break;
+    }
   }
+
   private boolean exitFound(int i,int j){
     if (inRange(i,j))
       return false;
@@ -122,7 +92,8 @@ public class Graph{
   public void printGraph(){
     for (int i=0;i<this.m;i++){
       for (int j=0;j<this.n;j++){
-        System.out.print(this.graphNodes[i][j].getNbrOfNeighbours());
+        //System.out.print(this.graphNodes[i][j].getNbrOfNeighbours());
+        System.out.print(this.graphNodes[i][j].getStatus());
 				System.out.print(" ");
 			}
   		System.out.println();

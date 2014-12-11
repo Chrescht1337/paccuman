@@ -28,6 +28,10 @@ public class Node{
     this.status=status;
   }
 
+  public String getStatus(){
+    return this.status;
+  }
+
   public int getNbrOfNeighbours(){
     return this.neighbours.size();
   }
