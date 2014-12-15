@@ -96,7 +96,8 @@ public class SmallGraph{
             }
             currentNode.incCounter();
             coords = new int[2];
-            coords[0] = currentNode.coordI; coords[1] = currentNode.coordJ;
+            coords[0] = currentNode.getCoordI();
+            coords[1] = currentNode.getCoordJ();
             way.add(coords);
             neighbours = currentNode.getNeighbours();
 
