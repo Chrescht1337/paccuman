@@ -1,6 +1,7 @@
 import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Stack;
 
 class PakkumanWay{
   //private Hashtable<Vertex,Hashtable<Vertex,Integer>> dimTot;
@@ -56,9 +57,12 @@ class PakkumanWay{
     Vertex currentV = this.vertices.get(this.paccuman);
     Vertex nextV =currentV.getClosestNeighourToExit();
     Vertex tmpV= new Vertex();
-    System.out.println(currentV);
+    //System.out.println(currentV);
     int gotCandy=0;
-
+    //ArrayList<Vertex> way = new ArrayList<Vertex>();
+    //way.add(currentV);
+    Stack<Vertex> way=new Stack<Vertex>();
+    way.push(currentV);
     while (currentV.getType()!="E" && !currentV.isEmpty()){
       if (nextV.getType()=="M"){ //if monster
         if (gotCandy>0){  //if we have at least one candy in our pockets
@@ -67,14 +71,49 @@ class PakkumanWay{
         }
         else if (this.candies!=0){   // there are still free candies we can use
           tmpV=nextV;
+          nextV=currentV.getClosestCandy();
           if (!nextV.isEmpty()){
+          // we take the closest free candy from the current vertex, even if that
+          // means that we'll have to go "the extra mile"
             tmpV.setType("X");
             nextV.setType("o");
             this.candies--;
           }
-          else{
-            System.out.println("no candy reachable");
-            break;
+          else{ // we have to go back on our way to find a free candy
+            Stack<Vertex> tmpStack=new Stack<Vertex>();
+            tmpStack.push(way.pop());
+            if (!way.empty()){
+            // if Pakkuman has at least one candy as direct neighbour
+              tmpV=way.pop();
+              while (tmpV.getClosestCandy().isEmpty() && !way.empty()){
+              //we're looking for a free candy which is a direct neighbour to one
+              // of the previously visited vertices
+                tmpStack.push(tmpV);
+                tmpV=way.pop();
+              }
+            }
+            if (!way.empty()) {
+            // a candy as a neighbour to one of our previously visited vertices
+            // has been found
+              way.push(tmpV);
+              tmpV.getClosestCandy().setType("o");
+              way.push(tmpV.getClosestCandy());
+              way.push(tmpV);
+              while (!tmpStack.empty()){
+                way.push(tmpStack.pop());
+              this.candies--;
+              nextV=currentV.getClosestNeighourToExit();
+              nextV.setType("X");
+              }
+
+            }
+            //tmpV.getClosestCandy();
+            else{
+              System.out.println("no candy reachable");
+              while (!tmpStack.empty())
+                way.push(tmpStack.pop());
+              break;
+            }
           }
         }
         else{
@@ -83,8 +122,10 @@ class PakkumanWay{
         }
       }
       else{
-        nextV.setPredecessor(currentV.getIndex());
+        //nextV.setPredecessor(currentV.getIndex());
         currentV=nextV;
+        //if (!way.contains(currentV))
+        way.push(currentV);
         if (currentV.getType()=="B"){
           gotCandy++;
           this.candies--;
@@ -92,9 +133,13 @@ class PakkumanWay{
         }
         nextV=currentV.getClosestNeighourToExit();
         //System.out.println(nextV);
-        System.out.println(currentV);
+        //System.out.println(currentV);
       }
+
     }
+
+    while (!way.empty())
+      System.out.println(way.pop());
 
     //for (Vertex currentV = this.vertices.get.(this.paccuman),nextV =currentV)
     /*while (currentV.getType()!="E" && !nextV.isEmpty() && this.candies !=0 ){
