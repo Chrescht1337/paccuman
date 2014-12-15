@@ -1,0 +1,98 @@
++---+---+---+---+---+---+---+---+
+|       |           |           |
++---+   +---+   +---+   +---+   +
+|   |       |               |   |
++   +---+   +   +---+---+---+   +
+|           |   |           |   |
++   +---+---+---+   +---+   +   +
+|               |       |   |   |
++---+---+---+   +---+   +   +   +
+|           |           |   |   |
++   +---+   +---+---+---+   +   +
+|   |   |       |       |       |
++   +   +---+   +   +   +---+   +
+|   |       |       |       |   |
++   +   +   +---+---+---+   +   +
+|       |               |       |
++---+---+---+---+---+---+---+   +
+E - [ 8 , 8 ] distance to : E - [ 8 , 8 ] = 0
+E - [ 8 , 8 ] distance to : B - [ 4 , 7 ] = 4
+E - [ 8 , 8 ] distance to : B - [ 3 , 7 ] = 5
+E - [ 8 , 8 ] distance to : P - [ 1 , 4 ] = 2147483647
+E - [ 8 , 8 ] distance to : M - [ 2 , 5 ] = 8
+E - [ 8 , 8 ] distance to : M - [ 3 , 5 ] = 2147483647
+E - [ 8 , 8 ] distance to : M - [ 2 , 1 ] = 2147483647
+E - [ 8 , 8 ] distance to : M - [ 5 , 2 ] = 10
+E - [ 8 , 8 ] distance to : B - [ 7 , 4 ] = 2147483647
+B - [ 4 , 7 ] distance to : E - [ 8 , 8 ] = null
+B - [ 4 , 7 ] distance to : B - [ 4 , 7 ] = 2147483647
+B - [ 4 , 7 ] distance to : B - [ 3 , 7 ] = 1
+B - [ 4 , 7 ] distance to : P - [ 1 , 4 ] = 2147483647
+B - [ 4 , 7 ] distance to : M - [ 2 , 5 ] = 2147483647
+B - [ 4 , 7 ] distance to : M - [ 3 , 5 ] = 2147483647
+B - [ 4 , 7 ] distance to : M - [ 2 , 1 ] = 2147483647
+B - [ 4 , 7 ] distance to : M - [ 5 , 2 ] = 2147483647
+B - [ 4 , 7 ] distance to : B - [ 7 , 4 ] = 2147483647
+B - [ 3 , 7 ] distance to : E - [ 8 , 8 ] = null
+B - [ 3 , 7 ] distance to : B - [ 4 , 7 ] = 1
+B - [ 3 , 7 ] distance to : B - [ 3 , 7 ] = 2
+B - [ 3 , 7 ] distance to : P - [ 1 , 4 ] = 7
+B - [ 3 , 7 ] distance to : M - [ 2 , 5 ] = 2147483647
+B - [ 3 , 7 ] distance to : M - [ 3 , 5 ] = 2147483647
+B - [ 3 , 7 ] distance to : M - [ 2 , 1 ] = 2147483647
+B - [ 3 , 7 ] distance to : M - [ 5 , 2 ] = 2147483647
+B - [ 3 , 7 ] distance to : B - [ 7 , 4 ] = 2147483647
+P - [ 1 , 4 ] distance to : E - [ 8 , 8 ] = null
+P - [ 1 , 4 ] distance to : B - [ 4 , 7 ] = 2147483647
+P - [ 1 , 4 ] distance to : B - [ 3 , 7 ] = 7
+P - [ 1 , 4 ] distance to : P - [ 1 , 4 ] = 2147483647
+P - [ 1 , 4 ] distance to : M - [ 2 , 5 ] = 2147483647
+P - [ 1 , 4 ] distance to : M - [ 3 , 5 ] = 2147483647
+P - [ 1 , 4 ] distance to : M - [ 2 , 1 ] = 2147483647
+P - [ 1 , 4 ] distance to : M - [ 5 , 2 ] = 2147483647
+P - [ 1 , 4 ] distance to : B - [ 7 , 4 ] = 2147483647
+M - [ 2 , 5 ] distance to : E - [ 8 , 8 ] = null
+M - [ 2 , 5 ] distance to : B - [ 4 , 7 ] = 2147483647
+M - [ 2 , 5 ] distance to : B - [ 3 , 7 ] = 2147483647
+M - [ 2 , 5 ] distance to : P - [ 1 , 4 ] = 2147483647
+M - [ 2 , 5 ] distance to : M - [ 2 , 5 ] = 2147483647
+M - [ 2 , 5 ] distance to : M - [ 3 , 5 ] = 3
+M - [ 2 , 5 ] distance to : M - [ 2 , 1 ] = 2147483647
+M - [ 2 , 5 ] distance to : M - [ 5 , 2 ] = 2147483647
+M - [ 2 , 5 ] distance to : B - [ 7 , 4 ] = 2147483647
+M - [ 3 , 5 ] distance to : E - [ 8 , 8 ] = null
+M - [ 3 , 5 ] distance to : B - [ 4 , 7 ] = 2147483647
+M - [ 3 , 5 ] distance to : B - [ 3 , 7 ] = 2147483647
+M - [ 3 , 5 ] distance to : P - [ 1 , 4 ] = 2147483647
+M - [ 3 , 5 ] distance to : M - [ 2 , 5 ] = 3
+M - [ 3 , 5 ] distance to : M - [ 3 , 5 ] = 2147483647
+M - [ 3 , 5 ] distance to : M - [ 2 , 1 ] = 9
+M - [ 3 , 5 ] distance to : M - [ 5 , 2 ] = 2147483647
+M - [ 3 , 5 ] distance to : B - [ 7 , 4 ] = 2147483647
+M - [ 2 , 1 ] distance to : E - [ 8 , 8 ] = null
+M - [ 2 , 1 ] distance to : B - [ 4 , 7 ] = 2147483647
+M - [ 2 , 1 ] distance to : B - [ 3 , 7 ] = 2147483647
+M - [ 2 , 1 ] distance to : P - [ 1 , 4 ] = 2147483647
+M - [ 2 , 1 ] distance to : M - [ 2 , 5 ] = 2147483647
+M - [ 2 , 1 ] distance to : M - [ 3 , 5 ] = 9
+M - [ 2 , 1 ] distance to : M - [ 2 , 1 ] = 2147483647
+M - [ 2 , 1 ] distance to : M - [ 5 , 2 ] = 2147483647
+M - [ 2 , 1 ] distance to : B - [ 7 , 4 ] = 2147483647
+M - [ 5 , 2 ] distance to : E - [ 8 , 8 ] = null
+M - [ 5 , 2 ] distance to : B - [ 4 , 7 ] = 2147483647
+M - [ 5 , 2 ] distance to : B - [ 3 , 7 ] = 2147483647
+M - [ 5 , 2 ] distance to : P - [ 1 , 4 ] = 2147483647
+M - [ 5 , 2 ] distance to : M - [ 2 , 5 ] = 2147483647
+M - [ 5 , 2 ] distance to : M - [ 3 , 5 ] = 2147483647
+M - [ 5 , 2 ] distance to : M - [ 2 , 1 ] = 2147483647
+M - [ 5 , 2 ] distance to : M - [ 5 , 2 ] = 2147483647
+M - [ 5 , 2 ] distance to : B - [ 7 , 4 ] = 12
+B - [ 7 , 4 ] distance to : E - [ 8 , 8 ] = null
+B - [ 7 , 4 ] distance to : B - [ 4 , 7 ] = 2147483647
+B - [ 7 , 4 ] distance to : B - [ 3 , 7 ] = 2147483647
+B - [ 7 , 4 ] distance to : P - [ 1 , 4 ] = 2147483647
+B - [ 7 , 4 ] distance to : M - [ 2 , 5 ] = 2147483647
+B - [ 7 , 4 ] distance to : M - [ 3 , 5 ] = 2147483647
+B - [ 7 , 4 ] distance to : M - [ 2 , 1 ] = 2147483647
+B - [ 7 , 4 ] distance to : M - [ 5 , 2 ] = 12
+B - [ 7 , 4 ] distance to : B - [ 7 , 4 ] = 2147483647

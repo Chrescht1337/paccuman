@@ -1,13 +1,16 @@
 //  Marius Küpper - Christian Frantzen
+import java.util.ArrayList;
+import java.util.List;
 import java.io.*;
+
 public class Graph{
   private int monsters;
   private int candies;
   private int m;		//nbre de lignes
   private int n;		//nbre de colonnes
   private Node[][] graphNodes;  //le graphe représenté en fonction de noeuds
-  private Node exit;
-  private int[][] positions;
+  public Node exit;
+  public int[][] positions;
 
   public Graph(int m,int n,int monsters,int candies,String[] labyrinth,int[][] positions)  {
     this.m=m;
