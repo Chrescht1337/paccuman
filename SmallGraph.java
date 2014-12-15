@@ -17,6 +17,12 @@ public class SmallGraph{
       return this.exit;
     }
 
+    public void printEdges(){
+      for (int i=0;i<this.vertices.size();i++)
+        for (Edge e :this.vertices.get(i).getAdjacencies())
+          System.out.println(e);
+    }
+
     public SmallGraph(Graph g_){
         g = g_;
         vertices = new ArrayList<Vertex>();
@@ -70,14 +76,14 @@ public class SmallGraph{
         Vertex newVertex = lastVertex;
         Edge newEdge = new Edge(); // we return a empty edge if we don't find a special node
 
-        //if ( !currentNode.getStatus().equals(" ") ){ // special Node found
-            //newVertex = new Vertex(currentNode.getStatus(), currentNode.getCoordI(), currentNode.getCoordJ()); // create new Vertex
-            //newEdge = newVertex.newEdge(lastVertex, way); // edge from lastVertex to newVertex
-            //vertices.add(newVertex); // add the new Vertex to the small graph
-            //specialNode = true;
-        //}
-        if (this.specialNodeFound(currentNode,newVertex,lastVertex,newEdge,way))
+        if ( !currentNode.getStatus().equals(" ") ){ // special Node found
+            newVertex = new Vertex(currentNode.getStatus(), currentNode.getCoordI(), currentNode.getCoordJ()); // create new Vertex
+            newEdge = newVertex.newEdge(lastVertex, way); // edge from lastVertex to newVertex
+            vertices.add(newVertex); // add the new Vertex to the small graph
             specialNode = true;
+        }
+        //if (this.specialNodeFound(currentNode,newVertex,lastVertex,newEdge,way))
+        //    specialNode = true;
 
         currentNode.incCounter(); // visited
         int[] coords = new int[2]; // coords of node
@@ -101,15 +107,15 @@ public class SmallGraph{
             way.add(coords);
             neighbours = currentNode.getNeighbours();
 
-            //if ( !currentNode.getStatus().equals(" ") ){
-            //    newVertex = new Vertex(currentNode.getStatus(), currentNode.coordI, currentNode.coordJ);
-            //    newEdge = newVertex.newEdge(lastVertex, way);
-            //    vertices.add(newVertex);
-            //    specialNode = true;
-            //}
+            if ( !currentNode.getStatus().equals(" ") ){
+                newVertex = new Vertex(currentNode.getStatus(), currentNode.coordI, currentNode.coordJ);
+                newEdge = newVertex.newEdge(lastVertex, way);
+                vertices.add(newVertex);
+                specialNode = true;
+            }
 
-            if (this.specialNodeFound(currentNode,newVertex,lastVertex,newEdge,way))
-              specialNode=true;
+            //if (this.specialNodeFound(currentNode,newVertex,lastVertex,newEdge,way))
+            //  specialNode=true;
         }
 
         ArrayList<Edge> edges = new ArrayList<Edge>(); // save all the following edges that are created in the recursive calls

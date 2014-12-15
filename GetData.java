@@ -87,7 +87,8 @@ public class GetData {
         //g.printGraph();
         SmallGraph gg=new SmallGraph(g);
 
-        PakkumanWay pW = new PakkumanWay(gg.getGraphVertices());
+        //gg.printEdges();
+        PakkumanWay pW = new PakkumanWay(gg.getGraphVertices(),monsters,candies);
         //Hashtable<Vertex,Hashtable<Vertex,Integer>> dimTot= new Hashtable<Vertex,Hashtable<Vertex,Integer>>();
         //Hashtable<Vertex,Hashtable<Vertex,Vertex>> predTot= new Hashtable<Vertex,Hashtable<Vertex,Vertex>>();
         //Hashtable<Vertex,Integer> dim = new Hashtable<Vertex,Integer>();

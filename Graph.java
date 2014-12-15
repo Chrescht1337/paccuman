@@ -81,6 +81,7 @@ public class Graph{
       return false;
 		else{
       this.exit=new Node(i,j);
+      //this.exit.setStatus("E");
       if (i<0)
         this.exit.addNeighbour(this.graphNodes[i+1][j]);
       else if (i==m)

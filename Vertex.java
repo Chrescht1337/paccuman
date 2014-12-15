@@ -3,25 +3,28 @@ import java.util.List;
 import java.io.*;
 import java.util.Collections;
 
-public class Vertex implements Comparable<Vertex>{
+public class Vertex{
 
   private ArrayList<Edge> adjacencies = new ArrayList<Edge>();
   private String type;
 	private int coordI;
 	private int coordJ;
-  private int shortestDistance;
-  private Vertex predecessor;
+  private int predecessor;
+  private int index;
+  private int distToExit;
 
 	public Vertex(String type_, int coordI_, int coordJ_){
 		this.type = type_;
 		this.coordJ = coordJ_;
 		this.coordI = coordI_;
-    this.shortestDistance=Integer.MAX_VALUE;
-    this.predecessor=new Vertex();
 	}
 
   public Vertex(){
     this.type="empty";
+  }
+
+  public boolean isEmpty(){
+    return this.type=="empty";
   }
 
 	public Edge newEdge(Vertex other, ArrayList<int[]> way){//n.newEdge(toConnect, way);
@@ -68,20 +71,56 @@ public class Vertex implements Comparable<Vertex>{
     return Integer.MAX_VALUE;
   }
 
-  public int getShortestDistance(){
-    return this.shortestDistance;
+  public void setPredecessor(int i){
+    this.predecessor=i;
   }
 
-  public void setShortestDistance(int i){
-    this.shortestDistance=i;
+  public int getPredecessor(){
+    return this.predecessor;
   }
 
-  public void setPredecessor(Vertex v){
-    this.predecessor=v;
+  public void setIndex(int i){
+    this.index=i;
   }
 
-  public int compareTo(Vertex v){
-    return Integer.compare(this.shortestDistance,v.getShortestDistance());
+  public int getIndex(){
+    return this.index;
+  }
+
+  public void setType(String s){
+    this.type=s;
+  }
+
+  public void setDistanceToExit(int i){
+    this.distToExit=i;
+  }
+
+  public int getDistanceToExit(){
+    return this.distToExit;
+  }
+
+  public Vertex getClosestNeighourToExit(){
+    int min=Integer.MAX_VALUE;
+    Vertex v=new Vertex();
+    for (Edge e : this.adjacencies){
+      if (e.getTarget().getDistanceToExit()<min){
+        v=e.getTarget();
+        min=e.getTarget().getDistanceToExit();
+      }
+    }
+    return v;
+  }
+
+  public Vertex getClosestCandy(){
+    int min=Integer.MAX_VALUE;
+    Vertex v=new Vertex();
+    for (Edge e: this.adjacencies){
+      if (e.getTarget().distanceTo(this)<min && e.getTarget().getType()=="B"){
+          v=e.getTarget();
+          min=e.getTarget().distanceTo(this);
+      }
+    }
+    return v;
   }
 
   public String toString(){
