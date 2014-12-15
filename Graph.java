@@ -21,7 +21,7 @@ public class Graph{
      for (int i=0;i<m;i++)
        for (int j=0;j<n;j++)
          this.graphNodes[i][j]=new Node(i,j);
-    this.exit = new Node(this.m,this.n);
+    //this.exit = new Node(this.m,this.n);
     this.positions=positions;
     labScan(labyrinth);
 
@@ -80,6 +80,7 @@ public class Graph{
     if (inRange(i,j))
       return false;
 		else{
+      this.exit=new Node(i,j);
       if (i<0)
         this.exit.addNeighbour(this.graphNodes[i+1][j]);
       else if (i==m)
@@ -90,6 +91,10 @@ public class Graph{
         this.exit.addNeighbour(this.graphNodes[i][j-1]);
       return true;
     }
+  }
+
+  public Node getExit(){
+    return this.exit;
   }
 
   public void printGraph(){

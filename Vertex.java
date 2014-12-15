@@ -58,6 +58,8 @@ public class Vertex implements Comparable<Vertex>{
 
   public int distanceTo(Vertex v){
     int i=0;
+    if (v==this)
+      return 0;
     while (i<this.adjacencies.size()){
       if (this.adjacencies.get(i).getTarget()==v)
         return this.adjacencies.get(i).getDistance();

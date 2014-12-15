@@ -38,15 +38,24 @@ public class SmallGraph{
         }
 
         vertices.add(new Vertex("P",this.pakkuman[0],this.pakkuman[1]);*/
-        this.exit = new Vertex("E",g.exit.coordI,g.exit.coordJ);
+        this.exit = new Vertex("E",g.getExit().getCoordI(),g.getExit().getCoordJ());
         vertices.add(this.exit);
 
-        parcourGraph(this.exit, g.exit, new ArrayList<int[]>());
+        parcourGraph(this.exit, g.getExit(), new ArrayList<int[]>());
 
         //for(Vertex v:vertices)
         //    System.out.println(v.toString());
     }
 
+    public boolean specialNodeFound(Node n,Vertex newVertex,Vertex lastVertex,Edge newEdge,ArrayList<int[]> way){
+      if ( n.getStatus()!=" " ){ // special Node found
+        newVertex = new Vertex(n.getStatus(), n.getCoordI(), n.getCoordJ()); // create new Vertex
+        newEdge = newVertex.newEdge(lastVertex, way); // edge from lastVertex to newVertex
+        this.vertices.add(newVertex); // add the new Vertex to the small graph
+        return true;
+      }
+      return false;
+    }
 
     public Edge parcourGraph(Vertex lastVertex, Node currentNode, ArrayList<int[]> oldway){
         ArrayList<Node> neighbours = new ArrayList<Node>();
@@ -61,16 +70,19 @@ public class SmallGraph{
         Vertex newVertex = lastVertex;
         Edge newEdge = new Edge(); // we return a empty edge if we don't find a special node
 
-        if ( !currentNode.getStatus().equals(" ") ){ // special Node found
-            newVertex = new Vertex(currentNode.getStatus(), currentNode.coordI, currentNode.coordJ); // create new Vertex
-            newEdge = newVertex.newEdge(lastVertex, way); // edge from lastVertex to newVertex
-            vertices.add(newVertex); // add the new Vertex to the small graph
+        //if ( !currentNode.getStatus().equals(" ") ){ // special Node found
+            //newVertex = new Vertex(currentNode.getStatus(), currentNode.getCoordI(), currentNode.getCoordJ()); // create new Vertex
+            //newEdge = newVertex.newEdge(lastVertex, way); // edge from lastVertex to newVertex
+            //vertices.add(newVertex); // add the new Vertex to the small graph
+            //specialNode = true;
+        //}
+        if (this.specialNodeFound(currentNode,newVertex,lastVertex,newEdge,way))
             specialNode = true;
-        }
 
         currentNode.incCounter(); // visited
         int[] coords = new int[2]; // coords of node
-        coords[0] = currentNode.coordI; coords[1] = currentNode.coordJ;
+        coords[0] = currentNode.getCoordI();
+        coords[1] = currentNode.getCoordJ();
         way.add(coords); // add to way
 
         while( ( neighbours.size()==2 || ((currentNode.getStatus() == "P") && (neighbours.size() ==1)) ) && !specialNode ){ //go way
@@ -88,12 +100,15 @@ public class SmallGraph{
             way.add(coords);
             neighbours = currentNode.getNeighbours();
 
-            if ( !currentNode.getStatus().equals(" ") ){
-                newVertex = new Vertex(currentNode.getStatus(), currentNode.coordI, currentNode.coordJ);
-                newEdge = newVertex.newEdge(lastVertex, way);
-                vertices.add(newVertex);
-                specialNode = true;
-            }
+            //if ( !currentNode.getStatus().equals(" ") ){
+            //    newVertex = new Vertex(currentNode.getStatus(), currentNode.coordI, currentNode.coordJ);
+            //    newEdge = newVertex.newEdge(lastVertex, way);
+            //    vertices.add(newVertex);
+            //    specialNode = true;
+            //}
+
+            if (this.specialNodeFound(currentNode,newVertex,lastVertex,newEdge,way))
+              specialNode=true;
         }
 
         ArrayList<Edge> edges = new ArrayList<Edge>(); // save all the following edges that are created in the recursive calls

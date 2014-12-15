@@ -43,6 +43,14 @@ public class Node{
     return 1;
   }*/
 
+  public int getCoordI(){
+    return this.coordI;
+  }
+
+  public int getCoordJ(){
+    return this.coordJ;
+  }
+
   public boolean nextExists(){
   	return (this.neighbours.size() == 1) ? false : true;
   }

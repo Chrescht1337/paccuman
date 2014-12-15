@@ -5,12 +5,12 @@ JC = javac
 
 CLASSES = \
 				Edge.java \
-				GetData.java \
 				Graph.java \
 				SmallGraph.java \
 				Vertex.java \
 				Node.java \
-				PakkumanDijkstra.java
+				PakkumanWay.java \
+				GetData.java
 
 default: classes
 
