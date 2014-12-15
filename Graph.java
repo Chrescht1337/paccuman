@@ -100,11 +100,16 @@ public class Graph{
 
   public void printGraph(){
     for (int i=0;i<this.m;i++){
+  		System.out.print(i);
+			if (i<10)
+        System.out.print(" ");
+      System.out.print("| ");
       for (int j=0;j<this.n;j++){
         //System.out.print(this.graphNodes[i][j].getNbrOfNeighbours());
         System.out.print(this.graphNodes[i][j].getStatus());
-				System.out.print(" ");
+				System.out.print(" | ");
 			}
+  		System.out.print(i);
   		System.out.println();
 		}
 	}

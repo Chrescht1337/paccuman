@@ -53,7 +53,7 @@ public class SmallGraph{
         //    System.out.println(v.toString());
     }
 
-    public boolean specialNodeFound(Node n,Vertex newVertex,Vertex lastVertex,Edge newEdge,ArrayList<int[]> way){
+    /*public boolean specialNodeFound(Node n,Vertex newVertex,Vertex lastVertex,Edge newEdge,ArrayList<int[]> way){
       if ( n.getStatus()!=" " ){ // special Node found
         newVertex = new Vertex(n.getStatus(), n.getCoordI(), n.getCoordJ()); // create new Vertex
         newEdge = newVertex.newEdge(lastVertex, way); // edge from lastVertex to newVertex
@@ -61,7 +61,7 @@ public class SmallGraph{
         return true;
       }
       return false;
-    }
+    }*/
 
     public Edge parcourGraph(Vertex lastVertex, Node currentNode, ArrayList<int[]> oldway){
         ArrayList<Node> neighbours = new ArrayList<Node>();

@@ -26,12 +26,12 @@ class PakkumanWay{
       if (this.vertices.get(i).getType()=="P")
         this.paccuman=i;
       this.vertices.get(i).setIndex(i);
-      this.vertices.get(i).setDistanceToExit(this.matTrans[0][i]);
-
+      this.vertices.get(i).setDistanceToExit(this.matTrans[i][0]);
     }
     this.wayOut();
     //this.printMat();
-
+    System.out.println();
+    this.fastestWay();
   }
 
   private void matTransitive(){
@@ -49,15 +49,33 @@ class PakkumanWay{
                 //-1 because the intermediary Node is counted twice in the edge
   }
 
-  public boolean directWayOut(int currentVertex){
-    return true;
+  private void backToInitialMonster(Stack<Vertex>way,Stack<Vertex>tmpStack,Vertex tmpV,Vertex nextV,Vertex currentV){
+    way.push(tmpV);
+    Vertex closeCandy=tmpV.getClosestCandy();
+    closeCandy.setType("o");
+    way.push(closeCandy);
+    way.push(tmpV);
+    while (!tmpStack.empty())
+      way.push(tmpStack.pop());
+    this.candies--;
+    nextV=currentV.getClosestNeighourToExit(); // visiting the monster
+    nextV.setType("X"); //feeding it
+  }
+
+  public void fastestWay(){
+    Vertex currentV =this.vertices.get(this.paccuman);
+    System.out.println(currentV);
+    while (currentV.getType()!="E"){
+      currentV=currentV.getClosestNeighourToExit();
+    System.out.println(currentV);
+    }
   }
 
   public void wayOut(){
     Vertex currentV = this.vertices.get(this.paccuman);
+    //System.out.println(this.paccuman);
     Vertex nextV =currentV.getClosestNeighourToExit();
     Vertex tmpV= new Vertex();
-    //System.out.println(currentV);
     int gotCandy=0;
     //ArrayList<Vertex> way = new ArrayList<Vertex>();
     //way.add(currentV);
@@ -94,24 +112,26 @@ class PakkumanWay{
             }
             if (!way.empty()) {
             // a candy as a neighbour to one of our previously visited vertices
-            // has been found
+            // has been found, we change our previous way to take it and return
+            // to the initial monster
+              this.backToInitialMonster(way,tmpStack,tmpV,nextV,currentV);
+              /*way.push(tmpV);
+              Vertex closeCandy=tmpV.getClosestCandy();
+              closeCandy.setType("o");
+              way.push(closeCandy);
               way.push(tmpV);
-              tmpV.getClosestCandy().setType("o");
-              way.push(tmpV.getClosestCandy());
-              way.push(tmpV);
-              while (!tmpStack.empty()){
+              while (!tmpStack.empty())
                 way.push(tmpStack.pop());
               this.candies--;
               nextV=currentV.getClosestNeighourToExit();
-              nextV.setType("X");
-              }
-
+              nextV.setType("X");*/
             }
-            //tmpV.getClosestCandy();
             else{
               System.out.println("no candy reachable");
-              while (!tmpStack.empty())
+              tmpStack.push(tmpV);
+              while (!tmpStack.empty()){
                 way.push(tmpStack.pop());
+              }
               break;
             }
           }
@@ -122,9 +142,7 @@ class PakkumanWay{
         }
       }
       else{
-        //nextV.setPredecessor(currentV.getIndex());
         currentV=nextV;
-        //if (!way.contains(currentV))
         way.push(currentV);
         if (currentV.getType()=="B"){
           gotCandy++;
@@ -132,29 +150,11 @@ class PakkumanWay{
           currentV.setType("o");
         }
         nextV=currentV.getClosestNeighourToExit();
-        //System.out.println(nextV);
-        //System.out.println(currentV);
       }
-
     }
-
     while (!way.empty())
       System.out.println(way.pop());
-
-    //for (Vertex currentV = this.vertices.get.(this.paccuman),nextV =currentV)
-    /*while (currentV.getType()!="E" && !nextV.isEmpty() && this.candies !=0 ){
-      if (nextV.getType()=="M"){
-        nextV=currentV.getClosestCandy();
-        if (nextV.isEmpty()){
-
-        }
-      }
-    }*/
   }
-
-  // public int getDistanceToExit(int i){
-  //   return this.matTrans[i][this.exit];
-  // }
 
   public void printMat(){
     for (int i=0;i<this.nbrOfVertices;i++)
@@ -164,12 +164,6 @@ class PakkumanWay{
         System.out.print(this.vertices.get(j));
         System.out.print(" matTrans : ");
         System.out.println(this.matTrans[i][j]);
-        // if(this.vertices.get(i).distanceTo(this.vertices.get(j))<Integer.MAX_VALUE){
-        //   System.out.print(" distanceTo : ");
-        //   System.out.println(this.vertices.get(i).distanceTo(this.vertices.get(j)));
-        // }
-        // else
-        // System.out.println();
       }
   }
 

@@ -47,7 +47,8 @@ public class GetData {
                     {
                         String[] parts2 = retval.split(",");
                         positions[j][0] = Integer.parseInt(parts2[0]);
-                        positions[j][1] = Integer.parseInt(parts2[1].substring(0,1));
+                        parts2[1]=parts2[1].trim();
+                        positions[j][1] = Integer.parseInt(parts2[1].substring(0,parts2[1].length()-1));
                         j++;
                     }
                     i++;
@@ -89,31 +90,8 @@ public class GetData {
 
         //gg.printEdges();
         PakkumanWay pW = new PakkumanWay(gg.getGraphVertices(),monsters,candies);
-        //Hashtable<Vertex,Hashtable<Vertex,Integer>> dimTot= new Hashtable<Vertex,Hashtable<Vertex,Integer>>();
-        //Hashtable<Vertex,Hashtable<Vertex,Vertex>> predTot= new Hashtable<Vertex,Hashtable<Vertex,Vertex>>();
-        //Hashtable<Vertex,Integer> dim = new Hashtable<Vertex,Integer>();
-        //Hashtable<Vertex,Vertex> pred = new Hashtable<Vertex,Vertex>();
-        //ArrayList<Vertex> graphVertices= gg.getGraphVertices();
-        /*for (int i=0;i<graphVertices.size();i++){
-          Hashtable<Vertex,Integer> dim = new Hashtable<Vertex,Integer>();
-          Hashtable<Vertex,Vertex> pred = new Hashtable<Vertex,Vertex>();
-          pD.dijkstra(graphVertices.get(i),graphVertices,dim,pred);
-          dimTot.put(graphVertices.get(i),dim);
-          predTot.put(graphVertices.get(i),pred);
-        //gg.printIt();
-        }
 
-        for (int i=0;i<graphVertices.size();i++){
-          for (int j=0;j<graphVertices.size();j++){
-            System.out.print(graphVertices.get(i));
-            System.out.print(" - distance to : ");
-            System.out.print(graphVertices.get(j));
-            System.out.print(" = ");
-            System.out.println(dimTot.get(graphVertices.get(i)).get(graphVertices.get(j)));
 
-          }
 
-        }
-        */
     }
 }
