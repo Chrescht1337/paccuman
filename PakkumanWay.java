@@ -60,33 +60,26 @@ class PakkumanWay{
     int gotCandy=0;
 
     while (currentV.getType()!="E" && !currentV.isEmpty()){
-      if (nextV.getType()=="M"){
-        if (gotCandy>0){
+      if (nextV.getType()=="M"){ //if monster
+        if (gotCandy>0){  //if we have at least one candy in our pockets
           gotCandy--;
           nextV.setType("X");
         }
-        else{
+        else if (this.candies!=0){   // there are still free candies we can use
           tmpV=nextV;
-          nextV=currentV.getClosestCandy();
-          //System.out.print("64 next: ");
-          //System.out.println(nextV);
           if (!nextV.isEmpty()){
             tmpV.setType("X");
             nextV.setType("o");
             this.candies--;
-            //nextV.setPredecessor(currentV.getIndex());
-            //currentV=nextV;
-            //nextV=currentV.getClosestNeighourToExit();
-            //System.out.print("73 : ");
-            //System.out.println(nextV);
-            //System.out.print("75 : ");
-            //System.out.println(currentV);
           }
           else{
-            System.out.println("no candy");
-            //currentV.setType("E");
+            System.out.println("no candy reachable");
             break;
           }
+        }
+        else{
+          System.out.println("no more free candies");
+          break;
         }
       }
       else{
