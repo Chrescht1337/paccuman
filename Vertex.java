@@ -111,17 +111,18 @@ public class Vertex{
     return v;
   }
 
-  public Vertex getClosestCandy(){
+  public Vertex getClosestType(String type){
     int min=Integer.MAX_VALUE;
     Vertex v=new Vertex();
     for (Edge e: this.adjacencies){
-      if (e.getTarget().distanceTo(this)<min && e.getTarget().getType()=="B"){
+      if (e.getTarget().distanceTo(this)<min && e.getTarget().getType()==type){
           v=e.getTarget();
           min=e.getTarget().distanceTo(this);
       }
     }
     return v;
   }
+
 
   public String toString(){
     StringBuilder txt= new StringBuilder();
