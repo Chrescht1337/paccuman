@@ -87,6 +87,10 @@ class PakkumanWay{
     this.nextV.setType("X");
   }
 
+  private void reset(){
+    
+  }
+
   //private boolean
 
   private  void /* ArrayList<Vertex> */ findHiddenCandies(){
@@ -134,7 +138,7 @@ class PakkumanWay{
             int i=this.way.size()-1;
 
             if (this.way.size()!=1)
-            // if Pakkuman has at least one candy as direct neighbour
+            // if Pakkuman has at least one candy as a direct neighbour
               while (this.way.get(i).getClosestType("B").isEmpty() && i>=0)
                 i--;
             if (this.way.size()!=1) {
