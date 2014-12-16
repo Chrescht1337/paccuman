@@ -5,14 +5,58 @@ import java.util.Hashtable;
 
 
 public class GetData {
-    public static String[] initLab;
-    public static int monsters;
-    public static int candies;
-    public static int m;
-    public static int n;
-    public static int[][] positions;
+    private String[] initLab;
+    private int monsters;
+    private int candies;
+    private int m;
+    private int n;
+    private int[][] positions;
 
-    private static void saveInfos(BufferedReader reader){
+    public GetData(String fileName){
+        try {
+            // FileReader reads text files in the default encoding.
+            FileReader fileReader = new FileReader(fileName);
+
+            // Always wrap FileReader in BufferedReader.
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            saveInfos(bufferedReader);
+
+            bufferedReader.close();
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println( "Unable to open file '" + fileName + "'");
+        }
+        catch(IOException ex) {
+            System.out.println( "Error reading file '" + fileName + "'");
+        }
+    }
+
+    public String[] getLab(){
+        return initLab;
+    }
+
+    public int getMonsters (){
+        return monsters;
+    }
+
+    public int getCandies (){
+        return candies;
+    }
+
+    public int getM (){
+        return m;
+    }
+
+    public int getN (){
+        return n;
+    }
+
+    public int[][] getPositions (){
+        return positions;
+    }
+
+    private void saveInfos(BufferedReader reader){
         try {
             // This will reference one line at a time
             String line = reader.readLine();
@@ -58,40 +102,5 @@ public class GetData {
         catch(IOException ex) {
             System.out.println( "Error reading file ");
         }
-    }
-
-
-    public static void main(String [] args) {
-
-        // The name of the file to open.
-        String fileName = args[0];
-
-        try {
-            // FileReader reads text files in the default encoding.
-            FileReader fileReader = new FileReader(fileName);
-
-            // Always wrap FileReader in BufferedReader.
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-            saveInfos(bufferedReader);
-
-            bufferedReader.close();
-        }
-        catch(FileNotFoundException ex) {
-            System.out.println( "Unable to open file '" + fileName + "'");
-        }
-        catch(IOException ex) {
-            System.out.println( "Error reading file '" + fileName + "'");
-        }
-
-        Graph g = new Graph(m,n,monsters,candies,initLab,positions);
-        //g.printGraph();
-        SmallGraph gg=new SmallGraph(g);
-
-        //gg.printEdges();
-        PakkumanWay pW = new PakkumanWay(gg.getGraphVertices(),monsters,candies);
-
-
-
     }
 }

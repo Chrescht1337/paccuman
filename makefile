@@ -10,7 +10,9 @@ CLASSES = \
 				Vertex.java \
 				Node.java \
 				PakkumanWay.java \
-				GetData.java
+				GetData.java \
+				Output.java \
+				MainFile.java
 
 default: classes
 

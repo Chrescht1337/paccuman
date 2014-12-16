@@ -123,6 +123,14 @@ public class Vertex{
     return v;
   }
 
+  public int nbrOfCandyNeighbours(){
+    int i=0;
+    for (Edge e : this.adjacencies){
+      if (e.getTarget().getType()=="B")
+        i++;
+    }
+    return i;
+  }
 
   public String toString(){
     StringBuilder txt= new StringBuilder();

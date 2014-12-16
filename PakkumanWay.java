@@ -15,6 +15,8 @@ class PakkumanWay{
   private int exit;
 
   private ArrayList<Vertex> way;
+  private ArrayList<Vertex> fastestWay;
+  private ArrayList<Vertex> goodForNothing;
   private Vertex currentV;
   private Vertex nextV;
   private int gotCandy;
@@ -27,15 +29,16 @@ class PakkumanWay{
     this.candies=candies_;
     this.exit=0; //index of exit in vertices is always 0
     this.matTransitive();
+    goodForNothing=new ArrayList<Vertex>();
     for (int i=0;i<this.nbrOfVertices;i++){
       if (this.vertices.get(i).getType()=="P")
         this.paccuman=i;
       this.vertices.get(i).setIndex(i);
       this.vertices.get(i).setDistanceToExit(this.matTrans[i][0]);
     }
-    this.fastestWay();
-    System.out.println();
     this.wayOut();
+    System.out.println();
+    this.fastestWay();
     //this.printMat();
   }
 
@@ -54,41 +57,54 @@ class PakkumanWay{
                 //-1 because the intermediary Node is counted twice in the edge
   }
 
-  public void fastestWay(){
-    Vertex currentV =this.vertices.get(this.paccuman);
+  private void fastestWay(){
+    this.fastestWay=new ArrayList<Vertex>();
     System.out.println("Fastest Way : ");
-    System.out.println(currentV);
-    while (currentV.getType()!="E"){
-      currentV=currentV.getClosestNeighourToExit();
-    System.out.println(currentV);
+    this.currentV=this.vertices.get(this.paccuman);
+    System.out.println(this.currentV);
+    while (this.currentV.getType()!="E"){
+      this.currentV=this.currentV.getClosestNeighourToExit();
+    System.out.println(this.currentV);
     }
   }
 
-  private void feedInitialMonster(ArrayList<Vertex>tmpStack,Vertex tmpV){
-    this.way.add(tmpV);
-    Vertex closeCandy=tmpV.getClosestType("B");
-    closeCandy.setType("o");
-    this.way.add(closeCandy);
-    this.way.add(tmpV);
-    while (tmpStack.size()!=0)
-      this.way.add(tmpStack.remove(tmpStack.size()-1));
-    this.candies--;
+  private void feedInitialMonster(int i){
+    this.way.add(i+1,this.way.get(i).getClosestType("B"));
+    this.way.get(i+1).setType("o");
+    this.way.add(i+2,this.way.get(i));
     this.handleMonster();
     this.moveOn();
   }
 
 
-  public void moveOn(){
+  private void moveOn(){
     this.currentV=nextV;
     this.way.add(currentV);
     this.nextV=currentV.getClosestNeighourToExit();
   }
 
-  public void handleMonster(){
+  private void handleMonster(){
     this.nextV.setType("X");
   }
 
-  public void wayOut(){
+  //private boolean
+
+  private  void /* ArrayList<Vertex> */ findHiddenCandies(){
+    int candiesSoFar=0;
+    for (int i=0;i<this.way.size();i++){
+      if (this.way.get(i).getType()=="o")
+      //candy we could use to "free" additional candies
+        candiesSoFar++;
+      for (Edge e : this.way.get(i).getAdjacencies()){
+        if (e.getTarget().getType()=="M"){
+
+        }
+
+      }
+    }
+  }
+
+  private void wayOut(){
     this.currentV = this.vertices.get(this.paccuman);
     this.nextV =this.currentV.getClosestNeighourToExit();
     Vertex tmpV= new Vertex();
@@ -103,7 +119,7 @@ class PakkumanWay{
           this.moveOn();
         }
         else if (this.candies!=0){   // there are still free candies we can use
-          tmpV=this.currentV.getClosestType("B"); // search for a candy-neighbour 
+          tmpV=this.currentV.getClosestType("B"); // search for a candy-neighbour
           if (!tmpV.isEmpty()){
           // we take the closest free candy from the current vertex, even if that
           // means that we'll have to go "the extra mile"
@@ -115,30 +131,20 @@ class PakkumanWay{
           }
           else{ // we have to go back on our way to find a free candy
             ArrayList<Vertex> tmpStack=new ArrayList<Vertex>();
-            tmpStack.add(way.remove(this.way.size()-1));
-            if (this.way.size()!=0){
+            int i=this.way.size()-1;
+
+            if (this.way.size()!=1)
             // if Pakkuman has at least one candy as direct neighbour
-              tmpV=way.remove(this.way.size()-1);
-              while (tmpV.getClosestType("B").isEmpty() && way.size()!=0){
-              //we're looking for a free candy which is a direct neighbour to one
-              // of the previously visited vertices
-                tmpStack.add(tmpV);
-                tmpV=way.remove(this.way.size()-1);
-              }
-            }
-            if (this.way.size()!=0) {
+              while (this.way.get(i).getClosestType("B").isEmpty() && i>=0)
+                i--;
+            if (this.way.size()!=1) {
             // a candy as a neighbour to one of our previously visited vertices
             // has been found, we change our previous way to take it and return
             // to feed the initial monster
-              this.feedInitialMonster(tmpStack,tmpV);
+              this.feedInitialMonster(i);
             }
             else{
               System.out.println("no candy reachable");
-              if (!tmpV.isEmpty())
-                this.way.add(tmpV);
-              while (tmpStack.size()!=0){
-                this.way.add(tmpStack.remove(tmpStack.size()-1));
-              }
               break;
             }
           }
@@ -157,8 +163,8 @@ class PakkumanWay{
         }
       }
     }
-    while (way.size()!=0)
-      System.out.println(way.remove(this.way.size()-1));
+    for (int i=0;i<this.way.size();i++)
+      System.out.println(way.get(i));
   }
 
   public void printMat(){
