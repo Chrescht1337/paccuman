@@ -31,8 +31,8 @@ public class Edge{
 		return this.origin;
 	}
 
-  public int getDistance(){// longueur du chemin entre origin et target
-    return this.way.size()-1;
+  public int getDistance(){// longueur du chemin
+    return this.way.size();
   }
 
 	public boolean isEmpty(){

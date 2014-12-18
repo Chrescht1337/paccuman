@@ -79,7 +79,6 @@ public class SmallGraph{
       Edge e;
       if( specialNode ){ // si on a trouvé un monstre/bonbon/pakkuman
         way = new ArrayList<int[]>(); // on vide la liste
-        way.add(coords);
       }
 
       for ( Node neighb: neighbours){

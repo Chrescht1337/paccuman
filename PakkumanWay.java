@@ -4,8 +4,6 @@ import java.util.Hashtable;
 import java.util.Stack;
 
 class PakkumanWay{
-  //private Hashtable<Vertex,Hashtable<Vertex,Integer>> dimTot;
-  //private Hashtable<Vertex,Hashtable<Vertex,Vertex>> predTot;
   private ArrayList<Vertex> vertices;
   private int nbrOfVertices;
   private int monsters;
@@ -14,13 +12,14 @@ class PakkumanWay{
   private int exit;
 
   private ArrayList<Vertex> way;
-  private ArrayList<Vertex> fastestWay;
+  //private ArrayList<Vertex> fastestWay;
   private ArrayList<Vertex> goodForNothing;
   private Vertex currentV;
   private Vertex nextV;
   private int gotCandy;
   private int candiesCollected;
   private boolean foundExit;
+  private boolean succesfulHiddenSearch;
 
   public PakkumanWay(ArrayList<Vertex> vertices_,int monsters_,int candies_){
     this.vertices=vertices_;
@@ -33,17 +32,14 @@ class PakkumanWay{
     this.dijkstra();
     goodForNothing=new ArrayList<Vertex>();
     for (int i=0;i<this.nbrOfVertices;i++){
-      if (this.vertices.get(i).getType()=="P")
+      if (this.vertices.get(i).getType()=="P"){
         this.paccuman=i;
-      this.vertices.get(i).setIndex(i);
-      //System.out.println(this.vertices.get(i));
+        i=nbrOfVertices;
+      }
     }
-    this.wayOut();
-    System.out.println();
-    //this.fastestWay();
-
+    //this.wayOut();
   }
-
+  /*
   private void fastestWay(){
     this.fastestWay=new ArrayList<Vertex>();
     System.out.println("Fastest Way : ");
@@ -54,7 +50,7 @@ class PakkumanWay{
     System.out.println(this.currentV);
     }
   }
-
+  */
   private void feedInitialMonster(int i){
     this.way.add(i+1,this.way.get(i).getClosestType("B"));
     this.candiesCollected++;
@@ -87,22 +83,65 @@ class PakkumanWay{
     return this.foundExit;
   }
 
-  private void reset(){
-
-  }
-
-  //private boolean
-
-  private  void /* ArrayList<Vertex> */ findHiddenCandies(int progress){
-    int candiesSoFar=0;
-    for (int i=0;i<progress;i++){
-      if (this.way.get(i).getType()=="o")
-      //candy we could use to "free" additional candies
-        candiesSoFar++;
-      else
-        candiesSoFar--;
+  private void profitableVisits(int progress){
+    ArrayList<Vertex> verticesEvaluated=new ArrayList<Vertex>();
+    for (int i=0;i<=progress;i++){
+      if (!verticesEvaluated.contains(this.way.get(i))){
+        verticesEvaluated.add(this.way.get(i));
+        for (Edge e:this.way.get(i).getAdjacencies()){
+          Vertex v= e.getTarget();
+          if (v.getType()=="M" && !verticesEvaluated.contains(v)){
+            this.succesfulHiddenSearch=false;
+            if (v.nbrOfCandyNeighbours()>1){
+              this.way.add(v);
+              v.setType("X");
+              for (int j=0;j<2;j++){
+              //on en collecte 2 bonbons pour rendre le déplacement rentable
+                Vertex tmpC=v.getClosestType("B");
+                this.way.add(tmpC);
+                tmpC.setType("o");
+                this.candies--;
+                this.candiesCollected++;
+                this.way.add(v);
+              }
+              this.gotCandy++;
+              this.handleMonster();
+              this.way.add(this.way.get(i));
+              this.succesfulHiddenSearch=true;
+              i=progress+1;
+              break;
+            }
+          }
+        }
       }
     }
+  }
+
+  private  void findHiddenCandies(int progress){
+    int candiesSoFar=0;
+    ArrayList<Vertex> verticesEvaluated=new ArrayList<Vertex>();
+    int i=0;
+    while (i<progress){
+      if (this.way.get(i).getType()=="o" && !verticesEvaluated.contains(this.way.get(i))){
+      //candy we could use to "free" additional candies
+          verticesEvaluated.add(this.way.get(i));
+          candiesSoFar++;
+      }
+      else if (this.way.get(i).getType()=="X" && !verticesEvaluated.contains(this.way.get(i)))
+        verticesEvaluated.add(this.way.get(i));
+        candiesSoFar--;
+      i++;
+    }
+
+    while (this.way.get(i).getType()!="X"){
+      if (this.way.get(i).getType()=="o" && !verticesEvaluated.contains(this.way.get(i))){
+        verticesEvaluated.add(this.way.get(i));
+        i++;
+      }
+    }
+    if (candiesSoFar>=1)
+      this.profitableVisits(progress);
+  }
 
 
   private void wayOut(){
@@ -147,8 +186,19 @@ class PakkumanWay{
               this.feedInitialMonster(i);
             }
             else{
-              System.out.println("no candy reachable");
-              break;
+              if (this.succesfulHiddenSearch){
+                ArrayList<Vertex> verticesEvaluated=new ArrayList<Vertex>();
+                for (int k=1;k<this.way.size();k++){
+                  if (this.way.get(k).getType()!="o" && !this.way.contains(this.way.get(k))){
+                    verticesEvaluated.add(this.way.get(k));
+                    this.findHiddenCandies(k);
+                  }
+                }
+              }
+              else{
+                System.out.println("no candy reachable");
+                break;
+              }
             }
           }
         }
@@ -169,15 +219,13 @@ class PakkumanWay{
     }
     if (currentV.getType()=="E")
       this.foundExit=true;
-    //for (int i=0;i<this.way.size();i++)
-    //  System.out.println(way.get(i));
   }
-
+  /*
   public void printWay(){
     for (int i=0;i<this.way.size();i++){
       System.out.println(this.way.get(i));
     }
-  }
+  }*/
 
   public void dijkstra(){
     for (int i=0;i<this.nbrOfVertices;i++)
@@ -210,5 +258,4 @@ class PakkumanWay{
       }
     }
   }
-
 }

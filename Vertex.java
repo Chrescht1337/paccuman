@@ -9,7 +9,6 @@ public class Vertex implements Comparable<Vertex>{
   private String type;
 	private int coordI;
 	private int coordJ;
-  private int index;
   private int distToExit;
 
 	public Vertex(String type_, int coordI_, int coordJ_){
@@ -72,14 +71,6 @@ public class Vertex implements Comparable<Vertex>{
     return Integer.MAX_VALUE;// si ils ne sont pas connectés
   }
 
-  public void setIndex(int i){
-    this.index=i;
-  }
-
-  public int getIndex(){
-    return this.index;
-  }
-
   public void setType(String s){
     this.type=s;
   }
@@ -138,9 +129,6 @@ public class Vertex implements Comparable<Vertex>{
     txt.append(" , ");
     txt.append(this.coordJ);
     txt.append(" ]");
-    //txt.append(" - ");
-    //txt.append("shortest distance to exit : ");
-    //txt.append(this.distToExit);
     return txt.toString();
 
   }

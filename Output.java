@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.io.*;
-
+import java.util.Collections;
 
 public class Output{
 	private String[] labyrinthe;
@@ -67,7 +67,6 @@ public class Output{
 					}
 				}
 				writer.println(labyrinthe[i]); // écrire dans le fichier
-				//System.out.println(labyrinthe[i]);
 				i++;
 			}
 			writer.close();
@@ -109,19 +108,21 @@ public class Output{
     					break;
     				}
     			}
-				for( int[] coords:currentEdge.getWay() ){ // marquer le chemin de pakkuman dans le labyrinthe
-					lengthWay++;
-					i = coords[0]; j = coords[1];
-					addToWay(i, j);
-					i = (i*2)+1;
-					j = (j*4)+2;
-					if ((i-1)/2<this.n && (j-2)/4<this.m){
-						type = Character.toString( labyrinthe[i].charAt(j) );
-						if( type.equals(" ") ){ // si pas de monstre/pakkuman/bonbon
-							labyrinthe[i] = labyrinthe[i].substring( 0, j )+"#"+labyrinthe[i].substring( ++j );
+					ArrayList<int[]> tmp = currentEdge.getWay();
+					Collections.reverse(tmp);
+					for( int[] coords: tmp){ // marquer le chemin de pakkuman dans le labyrinthe
+						lengthWay++;
+						i = coords[0]; j = coords[1];
+						addToWay(i, j);
+						i = (i*2)+1;
+						j = (j*4)+2;
+						if ((i-1)/2<this.n && (j-2)/4<this.m){
+							type = Character.toString( labyrinthe[i].charAt(j) );
+							if( type.equals(" ") ){ // si pas de monstre/pakkuman/bonbon
+								labyrinthe[i] = labyrinthe[i].substring( 0, j )+"#"+labyrinthe[i].substring( ++j );
+							}
 						}
 					}
-				}
 					lengthWay--;
 			}
 			for(String line:this.labyrinthe)
@@ -210,10 +211,10 @@ public class Output{
 
 				System.out.println(Integer.toString(i)+"."+getStringCoords(currentPos[0],currentPos[1])+line);
 			}
-			System.out.println("Trouvé un plus court chemin de longueur "+(lengthWay+1)+"."); //+1 pour le pas vers la sortie
+			System.out.println("Trouvé un plus court chemin de longueur "+(i)+".");
 			System.out.println("M. Pakkuman a récolté "+cCntr+" bonbons et rencontré "+mCntr+" monstres.");
 		}
-		else{
+		else if(wayPos.size()>0){
 			int[] last = wayPos.get(wayPos.size()-1);
 			System.out.println("Il n'y a pas moyen de sortir vive du labyrinthe\n car le monstre "+getStringCoords(last[0], last[1])+" nous empêche de sortir.");
 		}
