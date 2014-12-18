@@ -205,14 +205,16 @@ public class Output{
     			line = " Sortie!\n";
     		else{
     			line = getDirection(oldPos, currentPos);
-    			if( Character.toString( labyrinthe[currentPos[0]].charAt(currentPos[1]) ) == "o" ){
-    				line += ", bonbon récolté";
-    				cCntr++;
-    			}
-    			else if( Character.toString( labyrinthe[currentPos[0]].charAt(currentPos[1]) ) == "M" ){
-    				line += ", bonbon donné au petit monstre";
-    				mCntr++;
-    			}
+					if (currentPos[0]<this.m && currentPos[1]<this.n){
+	    			if( Character.toString( labyrinthe[currentPos[0]*2+1].charAt(currentPos[1]*4+2) ) == "o" ){
+	    				line += ", bonbon récolté";
+	    				cCntr++;
+	    			}
+	    			else if( Character.toString( labyrinthe[currentPos[0]*2+1].charAt(currentPos[1]*4+2) ) == "M" ){
+	    				line += ", bonbon donné au petit monstre";
+	    				mCntr++;
+	    			}
+					}
     		}
     		i++;
 

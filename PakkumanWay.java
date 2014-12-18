@@ -32,7 +32,8 @@ class PakkumanWay{
     this.exit=0; //index of exit in vertices is always 0
     this.candiesCollected=0;
     this.foundExit=false;
-    this.matTransitive();
+    //this.matTransitive();
+    this.dijkstra();
     goodForNothing=new ArrayList<Vertex>();
     for (int i=0;i<this.nbrOfVertices;i++){
       if (this.vertices.get(i).getType()=="P")
@@ -203,46 +204,33 @@ class PakkumanWay{
       }
   }
 
-  public void dijkstra(Vertex start){
-
-    /*
-
-    //start.setShortestDistance(0);
-    Hashtable<Vertex,Integer> dim = new Hashtable<Vertex,Integer>();
-    Hashtable<Vertex,Vertex> pred = new Hashtable<Vertex,Vertex>();
-    PriorityQueue<Vertex> q = new PriorityQueue<Vertex>();
-
-    dim.put(start,0);
-    for (int i=1;i<this.vertices.size();i++){
-      //vertices.get(i).setShortestDistance(start.distanceTo(vertices.get(i)));
-      //vertices.get(i).setPredecessor(start);
-      dim.put(this.vertices.get(i),start.distanceTo(this.vertices.get(i)));
-      pred.put(this.vertices.get(i),start);
-      q.add(this.vertices.get(i));
+  public void dijkstra(){
+    for (Edge e : this.vertices.get(this.exit).getAdjacencies()){
+      Vertex v = e.getTarget();
+      v.setDistanceToExit(e.getWay().size()-1);
     }
+    PriorityQueue<Vertex> q = new PriorityQueue<Vertex>();
+    for (int i=0;i<this.nbrOfVertices;i++)
+      q.add(this.vertices.get(i));
     while (!q.isEmpty()) {
       Vertex m = q.poll();
-      if (dim.get(m)==Integer.MAX_VALUE){
+      if (m.getDistanceToExit()==Integer.MAX_VALUE){
         q.clear();
       }
       else{
         for (Edge e : m.getAdjacencies()){
           Vertex v = e.getTarget();
           if (q.contains(v)){
-            int dist=dim.get(m) + v.distanceTo(m);
-            if (dist<dim.get(v)){
+            int dist=m.getDistanceToExit() + v.distanceTo(m);
+            if (dist<v.getDistanceToExit()){
               q.remove(v);
-              pred.put(v,m);
-              dim.put(v,dist);
+              v.setDistanceToExit(dist);
               q.add(v);
             }
           }
         }
       }
     }
-    this.dimTot.put(start,dim);
-    this.predTot.put(start,pred);
-  */
   }
 
 }

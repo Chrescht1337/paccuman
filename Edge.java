@@ -58,7 +58,7 @@ public class Edge{
 	public ArrayList<int[]> shareWay(Edge e){
 		ArrayList<int[]> otherWay = e.getWay();
 		int i = 0;
-		while( (otherWay.get(i)[0] == this.way.get(i)[0]) && (otherWay.get(i)[1] == this.way.get(i)[1]) ){
+		while( i<otherWay.size() && i<this.way.size() && (otherWay.get(i)[0] == this.way.get(i)[0]) && (otherWay.get(i)[1] == this.way.get(i)[1]) ){
 			i++;
 		}
 		ArrayList<int[]> newWay = new ArrayList<int[]>();

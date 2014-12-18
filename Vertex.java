@@ -3,7 +3,7 @@ import java.util.List;
 import java.io.*;
 import java.util.Collections;
 
-public class Vertex{
+public class Vertex implements Comparable<Vertex>{
 
   private ArrayList<Edge> adjacencies = new ArrayList<Edge>();
   private String type;
@@ -130,6 +130,10 @@ public class Vertex{
         i++;
     }
     return i;
+  }
+
+  public int compareTo(Vertex v){
+    return Integer.compare(this.distToExit,v.getDistanceToExit());
   }
 
   public String toString(){
