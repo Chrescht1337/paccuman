@@ -8,10 +8,10 @@ public class Edge{
     private Vertex origin;
     private ArrayList<int[]> way = new ArrayList<int[]>();
 
-    public Edge(Vertex target, Vertex origin_, ArrayList<int[]> way_){
+    public Edge(Vertex origin_, Vertex target, ArrayList<int[]> way_){
     	this.origin = origin_;
-		this.target = target;
-		this.way = new ArrayList<int[]>(way_);
+		  this.target = target;
+		  this.way = new ArrayList<int[]>(way_);
 	}
 
 	public Edge(){ // emptyEdge
@@ -31,7 +31,7 @@ public class Edge{
 		return this.origin;
 	}
 
-  public int getDistance(){
+  public int getDistance(){// longueur du chemin entre origin et target
     return this.way.size()-1;
   }
 
@@ -50,25 +50,21 @@ public class Edge{
     return txt.toString();
   }
 
-  private void printtt(ArrayList<int[]> otherWay){
-
-    System.out.println(otherWay);
-  }
-
-	public ArrayList<int[]> shareWay(Edge e){
+	public ArrayList<int[]> shareWay(Edge e){ // retourne le chemin combiné de deux edges
 		ArrayList<int[]> otherWay = e.getWay();
 		int i = 0;
+    // on sursaute le chemin commun:
 		while( i<otherWay.size() && i<this.way.size() && (otherWay.get(i)[0] == this.way.get(i)[0]) && (otherWay.get(i)[1] == this.way.get(i)[1]) ){
 			i++;
 		}
 		ArrayList<int[]> newWay = new ArrayList<int[]>();
 		int j = otherWay.size()-1;
-		while (j >= i){
+		while (j >= i){ // le chemin qui reste de e + ...
 			newWay.add(otherWay.get(j));
 			j--;
 		}
 
-		while (j < this.way.size() && j >= 0){
+		while (j < this.way.size() && j >= 0){ // ... le chemin qui reste de this
 			newWay.add(this.way.get(j));
 			j++;
 		}

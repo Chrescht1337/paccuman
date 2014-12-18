@@ -10,6 +10,7 @@ class Pakkuman{
     output.writeInitialSituation();
     output.writeFinalSituation(pW.getPakkumanWay(),pW.getNbrOfCandiesCollected(),pW.exitFound());
     output.terminalOutput();
+    pW.printWay();
 
   }
 }

@@ -5,11 +5,10 @@ import java.util.Collections;
 
 public class Vertex implements Comparable<Vertex>{
 
-  private ArrayList<Edge> adjacencies = new ArrayList<Edge>();
+  private ArrayList<Edge> adjacencies;
   private String type;
 	private int coordI;
 	private int coordJ;
-  private int predecessor;
   private int index;
   private int distToExit;
 
@@ -17,9 +16,10 @@ public class Vertex implements Comparable<Vertex>{
 		this.type = type_;
 		this.coordJ = coordJ_;
 		this.coordI = coordI_;
+    this.adjacencies = new ArrayList<Edge>();
 	}
 
-  public Vertex(){
+  public Vertex(){  // constructeur d'un vertex vide
     this.type="empty";
   }
 
@@ -27,11 +27,12 @@ public class Vertex implements Comparable<Vertex>{
     return this.type=="empty";
   }
 
-	public Edge newEdge(Vertex other, ArrayList<int[]> way){//n.newEdge(toConnect, way);
-		Edge e = new Edge(other,this, way);
+	public Edge newEdge(Vertex other, ArrayList<int[]> way){
+    // connecter ce vertex avec le vertex other, avec le chemin de nodes way
+		Edge e = new Edge(this,other, way); // edge de ce vertex vers other
 		this.addEdge(e);
 		Collections.reverse(way);
-		other.addEdge( new Edge(this,other, way) );
+		other.addEdge( new Edge(other,this, way) ); // edge de other vers ce vertex
 		return e;
 	}
 
@@ -59,24 +60,16 @@ public class Vertex implements Comparable<Vertex>{
     return this.adjacencies.size();
   }
 
-  public int distanceTo(Vertex v){
-    int i=0;
-    if (v==this)
+  public int distanceTo(Vertex v){ // calcule la distance vers le vertex v
+    if (v==this) // la distance vers lui-meme = 0
       return 0;
-    while (i<this.adjacencies.size()){
-      if (this.adjacencies.get(i).getTarget()==v)
+    int i=0;
+    while (i<this.adjacencies.size()){// regarder si v est un voisin direct:
+      if (this.adjacencies.get(i).getTarget()==v)// trouvé
         return this.adjacencies.get(i).getDistance();
       i++;
     }
-    return Integer.MAX_VALUE;
-  }
-
-  public void setPredecessor(int i){
-    this.predecessor=i;
-  }
-
-  public int getPredecessor(){
-    return this.predecessor;
+    return Integer.MAX_VALUE;// si ils ne sont pas connectés
   }
 
   public void setIndex(int i){
@@ -147,7 +140,7 @@ public class Vertex implements Comparable<Vertex>{
     txt.append(" ]");
     //txt.append(" - ");
     //txt.append("shortest distance to exit : ");
-    //txt.append(this.shortestDistance);
+    //txt.append(this.distToExit);
     return txt.toString();
 
   }

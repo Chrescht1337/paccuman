@@ -3,155 +3,103 @@ import java.util.List;
 import java.io.*;
 
 public class SmallGraph{
-    private ArrayList<Vertex> vertices;
-    //private int[] pakkuman;
-    //private int[][] monsters;
-    //private int[][] candies;
+    private ArrayList<Vertex> vertices; // liste de tous les vertex
     private Vertex exit;
     private Graph g;
+
+
+    public SmallGraph(Graph g_){
+      g = g_; // graph des nodes
+      vertices = new ArrayList<Vertex>();
+      this.exit = new Vertex("E",g.getExit().getCoordI(),g.getExit().getCoordJ());
+      vertices.add(this.exit);
+
+      parcourGraph(this.exit, g.getExit(), new ArrayList<int[]>()); // créer les vertex et les edges
+    }
 
     public ArrayList<Vertex> getGraphVertices(){
       return this.vertices;
     }
+
     public Vertex getExit(){
       return this.exit;
     }
 
-    public void printEdges(){
-      for (int i=0;i<this.vertices.size();i++)
-        for (Edge e :this.vertices.get(i).getAdjacencies())
-          System.out.println(e);
-    }
-
-    public SmallGraph(Graph g_){
-        g = g_;
-        vertices = new ArrayList<Vertex>();
-        /*this.monsters = new int[G.monsters][2];
-        this.pakkuman = new int[1][2];
-        this.candies = new int[G.candies][2];
-        int i=0;
-        this.pakkuman = G.positions[i];
-        i++;
-        while(i<1+this.monsters){
-            this.monsters[i][0] = G.positions[i][0];
-            this.monsters[i][1] = G.positions[i][1];
-            i++;
-        }
-        while(i<1+this.monsters+this.candies){
-            this.candies[i][0] = G.positions[i][0];
-            this.candies[i][1] = G.positions[i][1];
-            i++;
-        }
-
-        vertices.add(new Vertex("P",this.pakkuman[0],this.pakkuman[1]);*/
-        this.exit = new Vertex("E",g.getExit().getCoordI(),g.getExit().getCoordJ());
-        vertices.add(this.exit);
-
-        parcourGraph(this.exit, g.getExit(), new ArrayList<int[]>());
-
-        //for(Vertex v:vertices)
-        //    System.out.println(v.toString());
-    }
-
-    /*public boolean specialNodeFound(Node n,Vertex newVertex,Vertex lastVertex,Edge newEdge,ArrayList<int[]> way){
-      if ( n.getStatus()!=" " ){ // special Node found
-        newVertex = new Vertex(n.getStatus(), n.getCoordI(), n.getCoordJ()); // create new Vertex
-        newEdge = newVertex.newEdge(lastVertex, way); // edge from lastVertex to newVertex
-        this.vertices.add(newVertex); // add the new Vertex to the small graph
-        return true;
-      }
-      return false;
-    }*/
-
     public Edge parcourGraph(Vertex lastVertex, Node currentNode, ArrayList<int[]> oldway){
-        ArrayList<Node> neighbours = new ArrayList<Node>();
-        neighbours=currentNode.getNeighbours();
+      ArrayList<Node> neighbours = new ArrayList<Node>(); // voisins du node courant
+      neighbours=currentNode.getNeighbours();
 
-        ArrayList<int[]> way = new ArrayList<int[]>();
-        way.addAll(oldway);
+      ArrayList<int[]> way = new ArrayList<int[]>();
+      way.addAll(oldway);
 
-        Node oldNode = currentNode;
-        boolean specialNode = false; // true if found , false if not
+      Node oldNode = currentNode;
+      boolean specialNode = false; // true si trouvé un monstr/bonbon/pakkuman, false si pas
 
-        Vertex newVertex = lastVertex;
-        Edge newEdge = new Edge(); // we return a empty edge if we don't find a special node
+      Vertex newVertex = lastVertex;
+      Edge newEdge = new Edge(); // on returne une edge vide si on ne trouve pas de specialNode
 
-        if ( !currentNode.getStatus().equals(" ") ){ // special Node found
-            newVertex = new Vertex(currentNode.getStatus(), currentNode.getCoordI(), currentNode.getCoordJ()); // create new Vertex
-            newEdge = newVertex.newEdge(lastVertex, way); // edge from lastVertex to newVertex
-            vertices.add(newVertex); // add the new Vertex to the small graph
-            specialNode = true;
+      if ( !currentNode.getStatus().equals(" ") ){ // special Node trouvé
+        newVertex = new Vertex(currentNode.getStatus(), currentNode.getCoordI(), currentNode.getCoordJ()); // créer new Vertex
+        newEdge = newVertex.newEdge(lastVertex, way); // edge de lastVertex à newVertex
+        vertices.add(newVertex);
+        specialNode = true;
+      }
+
+      currentNode.incCounter(); // examiner
+      int[] coords = new int[2]; // coords du node
+      coords[0] = currentNode.getCoordI();
+      coords[1] = currentNode.getCoordJ();
+      way.add(coords); // ajouter au chemin
+
+      while( ( neighbours.size()==2 || ((currentNode.getStatus() == "P") && (neighbours.size() ==1)) ) && !specialNode ){ //go way
+        oldNode = currentNode;
+        if( !currentNode.nextExists() ) // impasse
+          return newEdge;
+        currentNode = currentNode.nextNode();
+        if( currentNode.getCounter() > 0){ // si déja examiné
+          oldNode = currentNode;
+          currentNode = currentNode.nextNode();
         }
-        //if (this.specialNodeFound(currentNode,newVertex,lastVertex,newEdge,way))
-        //    specialNode = true;
-
-        currentNode.incCounter(); // visited
-        int[] coords = new int[2]; // coords of node
+        currentNode.incCounter(); // examiner
+        coords = new int[2];
         coords[0] = currentNode.getCoordI();
         coords[1] = currentNode.getCoordJ();
-        way.add(coords); // add to way
+        way.add(coords); // ajouter au chemin
+        neighbours = currentNode.getNeighbours();
 
-        while( ( neighbours.size()==2 || ((currentNode.getStatus() == "P") && (neighbours.size() ==1)) ) && !specialNode ){ //go way
-            oldNode = currentNode;
-            if( !currentNode.nextExists() )
-                return newEdge;
-            currentNode = currentNode.nextNode();
-            if( currentNode.getCounter() > 0){
-                oldNode = currentNode;
-                currentNode = currentNode.nextNode();
-            }
-            currentNode.incCounter();
-            coords = new int[2];
-            coords[0] = currentNode.getCoordI();
-            coords[1] = currentNode.getCoordJ();
-            way.add(coords);
-            neighbours = currentNode.getNeighbours();
-
-            if ( !currentNode.getStatus().equals(" ") ){
-                newVertex = new Vertex(currentNode.getStatus(), currentNode.coordI, currentNode.coordJ);
-                newEdge = newVertex.newEdge(lastVertex, way);
-                vertices.add(newVertex);
-                specialNode = true;
-            }
-
-            //if (this.specialNodeFound(currentNode,newVertex,lastVertex,newEdge,way))
-            //  specialNode=true;
+        if ( !currentNode.getStatus().equals(" ") ){// special Node trouvé
+          newVertex = new Vertex(currentNode.getStatus(), currentNode.coordI, currentNode.coordJ); // créer new Vertex
+          newEdge = newVertex.newEdge(lastVertex, way); // edge de lastVertex à newVertex
+          vertices.add(newVertex);
+          specialNode = true;
         }
+      }
 
-        ArrayList<Edge> edges = new ArrayList<Edge>(); // save all the following edges that are created in the recursive calls
-        Edge e;
-        if( specialNode ){
-            way = new ArrayList<int[]>();
-            way.add(coords);
+      ArrayList<Edge> edges = new ArrayList<Edge>(); // enregrister tous les edges qui sont créee durant les appels récursives
+      Edge e;
+      if( specialNode ){ // si on a trouvé un monstre/bonbon/pakkuman
+        way = new ArrayList<int[]>(); // on vide la liste
+        way.add(coords);
+      }
+
+      for ( Node neighb: neighbours){
+        if( neighb != oldNode && neighb.getCounter() == 0 ){ // we test if we aren't going from were we come
+          e = parcourGraph(newVertex, neighb, way); // recursive call
+          if( !e.isEmpty() ) // we only add the new edge if it leads to a special node
+            edges.add(e);
         }
+      }
 
-        for ( Node neighb: neighbours)
-        {
-            if( neighb != oldNode && neighb.getCounter() == 0 ){ // we test if we aren't going from were we come
-                e = parcourGraph(newVertex, neighb, way); // recursive call
-                if( !e.isEmpty() ) // we only add the new edge if it leads to a special node
-                    edges.add(e);
-            }
+      if( neighbours.size() == 2 ) // retour d'un edge vide si le dernier node n'est pas un carrefour
+        newEdge = new Edge();
+
+      for(Edge edge:edges){ // on connecte les vertex retourné entre eux
+        for(Edge otherEdge:edges){
+          if( edge != otherEdge)
+            edge.getTarget().newEdge(otherEdge.getTarget(), edge.shareWay(otherEdge));
         }
-
-        if( neighbours.size() == 2 ) // return an empty edge if the special node is not on a crossover
-            newEdge = new Edge();
-
-        for(Edge edge:edges){ // we connect every vertex with every other vertex accessible
-            for(Edge otherEdge:edges){
-                if( edge != otherEdge)
-                    edge.getTarget().newEdge(otherEdge.getTarget(), edge.shareWay(otherEdge));
-            }
-        }
-        return newEdge;//(newVertex == lastVertex) ? newEdge : new Edge("Empty");
+      }
+      return newEdge;
     }
 
-  public void printIt(){
-    System.out.println(vertices.size());
-    for (int i=0;i<vertices.size();i++){
-      System.out.println(vertices.get(i));
-
-    }
   }
-
-}

@@ -6,7 +6,6 @@ import java.util.Stack;
 class PakkumanWay{
   //private Hashtable<Vertex,Hashtable<Vertex,Integer>> dimTot;
   //private Hashtable<Vertex,Hashtable<Vertex,Vertex>> predTot;
-  private int[][] matTrans;
   private ArrayList<Vertex> vertices;
   private int nbrOfVertices;
   private int monsters;
@@ -26,40 +25,23 @@ class PakkumanWay{
   public PakkumanWay(ArrayList<Vertex> vertices_,int monsters_,int candies_){
     this.vertices=vertices_;
     this.nbrOfVertices=this.vertices.size();
-    this.matTrans=new int[this.nbrOfVertices][this.nbrOfVertices];
     this.monsters=monsters_;
     this.candies=candies_;
     this.exit=0; //index of exit in vertices is always 0
     this.candiesCollected=0;
     this.foundExit=false;
-    //this.matTransitive();
     this.dijkstra();
     goodForNothing=new ArrayList<Vertex>();
     for (int i=0;i<this.nbrOfVertices;i++){
       if (this.vertices.get(i).getType()=="P")
         this.paccuman=i;
       this.vertices.get(i).setIndex(i);
-      this.vertices.get(i).setDistanceToExit(this.matTrans[i][0]);
+      //System.out.println(this.vertices.get(i));
     }
     this.wayOut();
     System.out.println();
-    this.fastestWay();
-    //this.printMat();
-  }
+    //this.fastestWay();
 
-  private void matTransitive(){
-    for (int i=0;i<this.nbrOfVertices;i++)
-      for (int j=0;j<this.nbrOfVertices;j++)
-        this.matTrans[i][j]=this.vertices.get(i).distanceTo(this.vertices.get(j));
-
-    for (int k=0;k<this.nbrOfVertices;k++)
-      for (int x=0;x<this.nbrOfVertices;x++)
-        if (this.matTrans[x][k]<Integer.MAX_VALUE)
-          for (int y=0;y<this.nbrOfVertices;y++)
-            if (this.matTrans[k][y]<Integer.MAX_VALUE)
-              if (this.matTrans[x][k]+this.matTrans[k][y]<this.matTrans[x][y])
-                this.matTrans[x][y]=this.matTrans[x][k]+this.matTrans[k][y]-1;
-                //-1 because the intermediary Node is counted twice in the edge
   }
 
   private void fastestWay(){
@@ -111,20 +93,17 @@ class PakkumanWay{
 
   //private boolean
 
-  private  void /* ArrayList<Vertex> */ findHiddenCandies(){
+  private  void /* ArrayList<Vertex> */ findHiddenCandies(int progress){
     int candiesSoFar=0;
-    for (int i=0;i<this.way.size();i++){
+    for (int i=0;i<progress;i++){
       if (this.way.get(i).getType()=="o")
       //candy we could use to "free" additional candies
         candiesSoFar++;
-      for (Edge e : this.way.get(i).getAdjacencies()){
-        if (e.getTarget().getType()=="M"){
-
-        }
-
+      else
+        candiesSoFar--;
       }
     }
-  }
+
 
   private void wayOut(){
     this.currentV = this.vertices.get(this.paccuman);
@@ -147,6 +126,7 @@ class PakkumanWay{
           // means that we'll have to go "the extra mile"
             tmpV.setType("o");  //grab candy
             this.way.add(tmpV);
+            this.way.add(currentV);
             this.handleMonster();
             this.moveOn();
             this.candiesCollected++;
@@ -158,9 +138,9 @@ class PakkumanWay{
 
             if (this.way.size()!=1)
             // if Pakkuman has at least one candy as a direct neighbour
-              while (this.way.get(i).getClosestType("B").isEmpty() && i>=0)
+              while (i>=0 && this.way.get(i).getClosestType("B").isEmpty())
                 i--;
-            if (this.way.size()!=1) {
+            if (this.way.size()!=1 && i>0) {
             // a candy as a neighbour to one of our previously visited vertices
             // has been found, we change our previous way to take it and return
             // to feed the initial monster
@@ -193,24 +173,22 @@ class PakkumanWay{
     //  System.out.println(way.get(i));
   }
 
-  public void printMat(){
-    for (int i=0;i<this.nbrOfVertices;i++)
-      for (int j=0;j<this.nbrOfVertices;j++){
-        System.out.print(this.vertices.get(i));
-        System.out.print(" - distance to : ");
-        System.out.print(this.vertices.get(j));
-        System.out.print(" matTrans : ");
-        System.out.println(this.matTrans[i][j]);
-      }
+  public void printWay(){
+    for (int i=0;i<this.way.size();i++){
+      System.out.println(this.way.get(i));
+    }
   }
 
   public void dijkstra(){
+    for (int i=0;i<this.nbrOfVertices;i++)
+      this.vertices.get(i).setDistanceToExit(Integer.MAX_VALUE);
+    this.vertices.get(this.exit).setDistanceToExit(0);
     for (Edge e : this.vertices.get(this.exit).getAdjacencies()){
       Vertex v = e.getTarget();
-      v.setDistanceToExit(e.getWay().size()-1);
+      v.setDistanceToExit(v.distanceTo(this.vertices.get(this.exit)));
     }
     PriorityQueue<Vertex> q = new PriorityQueue<Vertex>();
-    for (int i=0;i<this.nbrOfVertices;i++)
+    for (int i=1;i<this.nbrOfVertices;i++)
       q.add(this.vertices.get(i));
     while (!q.isEmpty()) {
       Vertex m = q.poll();

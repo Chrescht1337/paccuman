@@ -18,24 +18,23 @@ public class Graph{
     this.monsters=monsters;
     this.candies=candies;
     this.graphNodes=new Node[this.m][this.n];
-     for (int i=0;i<m;i++)
-       for (int j=0;j<n;j++)
-         this.graphNodes[i][j]=new Node(i,j);
-    //this.exit = new Node(this.m,this.n);
-    this.positions=positions;
-    labScan(labyrinth);
+    for (int i=0;i<m;i++)
+     for (int j=0;j<n;j++)
+       this.graphNodes[i][j]=new Node(i,j);
+     this.positions=positions;
+     labScan(labyrinth);
 
-    int i=0;
-        this.graphNodes[this.positions[0][0]][this.positions[0][1]].setStatus("P");
-        i++;
-        while(i<1+this.monsters)        {
-            this.graphNodes[this.positions[i][0]][this.positions[i][1]].setStatus("M");
-            i++;
-        }
-        while(i<1+this.monsters+this.candies){
-            this.graphNodes[this.positions[i][0]][this.positions[i][1]].setStatus("B");
-            i++;
-        }
+     int i=0;
+     this.graphNodes[this.positions[0][0]][this.positions[0][1]].setStatus("P");
+     i++;
+     while(i<1+this.monsters)        {
+      this.graphNodes[this.positions[i][0]][this.positions[i][1]].setStatus("M");
+      i++;
+    }
+    while(i<1+this.monsters+this.candies){
+      this.graphNodes[this.positions[i][0]][this.positions[i][1]].setStatus("B");
+      i++;
+    }
   }
 
   private boolean inRange(int i,int j){
@@ -58,20 +57,20 @@ public class Graph{
   private void connectNodes(int i,int j,int decal){
     switch(decal){
       case 0://colonne gauche
-        if (!(exitFound(i,j-1)))
-          this.graphNodes[i][j].addNeighbour(this.graphNodes[i][j-1]);
+      if (!(exitFound(i,j-1)))
+        this.graphNodes[i][j].addNeighbour(this.graphNodes[i][j-1]);
       break;
       case 1://colonne droite
-        if (!(exitFound(i,j+1)))
-          this.graphNodes[i][j].addNeighbour(this.graphNodes[i][j+1]);
+      if (!(exitFound(i,j+1)))
+        this.graphNodes[i][j].addNeighbour(this.graphNodes[i][j+1]);
       break;
       case 2://ligne supérieure
-        if (!(exitFound(i-1,j)))
-          this.graphNodes[i][j].addNeighbour(this.graphNodes[i-1][j]);
+      if (!(exitFound(i-1,j)))
+        this.graphNodes[i][j].addNeighbour(this.graphNodes[i-1][j]);
       break;
       case 3://ligne inférieure
-        if (!(exitFound(i+1,j)))
-          this.graphNodes[i][j].addNeighbour(this.graphNodes[i+1][j]);
+      if (!(exitFound(i+1,j)))
+        this.graphNodes[i][j].addNeighbour(this.graphNodes[i+1][j]);
       break;
     }
   }
@@ -79,9 +78,8 @@ public class Graph{
   private boolean exitFound(int i,int j){
     if (inRange(i,j))
       return false;
-		else{
+    else{
       this.exit=new Node(i,j);
-      //this.exit.setStatus("E");
       if (i<0)
         this.exit.addNeighbour(this.graphNodes[i+1][j]);
       else if (i==m)
@@ -100,17 +98,17 @@ public class Graph{
 
   public void printGraph(){
     for (int i=0;i<this.m;i++){
-  		System.out.print(i);
-			if (i<10)
+      System.out.print(i);
+      if (i<10)
         System.out.print(" ");
       System.out.print("| ");
       for (int j=0;j<this.n;j++){
         //System.out.print(this.graphNodes[i][j].getNbrOfNeighbours());
         System.out.print(this.graphNodes[i][j].getStatus());
-				System.out.print(" | ");
-			}
-  		System.out.print(i);
-  		System.out.println();
-		}
-	}
+        System.out.print(" | ");
+      }
+      System.out.print(i);
+      System.out.println();
+    }
+  }
 }

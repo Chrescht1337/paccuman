@@ -7,23 +7,22 @@ public class Node{
   // ' ' pour libre, 'P' pour Pakkuman, 'B' pour bonbons,'M' pour monstres
   // '#' pour traversé, 'S' pour la sortie
   private ArrayList<Node> neighbours;
-
   public int coordI;
   public int coordJ;
-  public int counter;
-
+  public int counter; // compte: combien de fois examiné
 
   public Node(int i, int j){
-    this.status =" ";
-    this.neighbours= new ArrayList<Node>();
-    this.coordJ=j;
-    this.coordI=i;
+    this.status = " ";
+    this.neighbours = new ArrayList<Node>();
+    this.coordJ = j;
+    this.coordI = i;
+    this.counter = 0;
   }
 
   public void addNeighbour(Node n){
-    if (!(this.neighbours.contains(n))){
+    if (!(this.neighbours.contains(n))){ // si pas déjà dans la liste
       this.neighbours.add(n);
-      n.addNeighbour(this);
+      n.addNeighbour(this); // l'inverse
     }
   }
 
@@ -38,10 +37,6 @@ public class Node{
   public int getNbrOfNeighbours(){
     return this.neighbours.size();
   }
-/*
-  public int arc(Node n){
-    return 1;
-  }*/
 
   public int getCoordI(){
     return this.coordI;
@@ -51,29 +46,23 @@ public class Node{
     return this.coordJ;
   }
 
-  public boolean nextExists(){
-  	return (this.neighbours.size() == 1) ? false : true;
+  public boolean nextExists(){ // on se trouve dans une impasse ou pas ?
+  	return !(this.neighbours.size() == 1);
   }
 
-  public Node nextNode()
-  {
+  public Node nextNode(){ // return le voision qui n'a pas encore été examiné
      return (this.neighbours.get(0).getCounter() > 0) ? this.neighbours.get(1) : this.neighbours.get(0);
   }
 
-  public ArrayList<Node> getNeighbours()
-  {
+  public ArrayList<Node> getNeighbours(){
       return this.neighbours;
   }
-  public void incCounter()
-  {
+
+  public void incCounter(){ // examiner
       this.counter++;
   }
-  public void decCounter()
-  {
-      this.counter--;
-  }
-  public int getCounter()
-  {
+
+  public int getCounter(){
       return this.counter;
   }
 
