@@ -12,7 +12,7 @@ CLASSES = \
 				PakkumanWay.java \
 				GetData.java \
 				Output.java \
-				MainFile.java
+				Pakkuman.java
 
 default: classes
 

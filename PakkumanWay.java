@@ -20,6 +20,8 @@ class PakkumanWay{
   private Vertex currentV;
   private Vertex nextV;
   private int gotCandy;
+  private int candiesCollected;
+  private boolean foundExit;
 
   public PakkumanWay(ArrayList<Vertex> vertices_,int monsters_,int candies_){
     this.vertices=vertices_;
@@ -28,6 +30,8 @@ class PakkumanWay{
     this.monsters=monsters_;
     this.candies=candies_;
     this.exit=0; //index of exit in vertices is always 0
+    this.candiesCollected=0;
+    this.foundExit=false;
     this.matTransitive();
     goodForNothing=new ArrayList<Vertex>();
     for (int i=0;i<this.nbrOfVertices;i++){
@@ -70,6 +74,7 @@ class PakkumanWay{
 
   private void feedInitialMonster(int i){
     this.way.add(i+1,this.way.get(i).getClosestType("B"));
+    this.candiesCollected++;
     this.way.get(i+1).setType("o");
     this.way.add(i+2,this.way.get(i));
     this.handleMonster();
@@ -87,8 +92,20 @@ class PakkumanWay{
     this.nextV.setType("X");
   }
 
+  public int getNbrOfCandiesCollected(){
+    return this.candiesCollected;
+  }
+
+  public ArrayList<Vertex> getPakkumanWay(){
+    return this.way;
+  }
+
+  public boolean exitFound(){
+    return this.foundExit;
+  }
+
   private void reset(){
-    
+
   }
 
   //private boolean
@@ -131,6 +148,7 @@ class PakkumanWay{
             this.way.add(tmpV);
             this.handleMonster();
             this.moveOn();
+            this.candiesCollected++;
             this.candies--;
           }
           else{ // we have to go back on our way to find a free candy
@@ -162,13 +180,16 @@ class PakkumanWay{
         this.moveOn();
         if (this.currentV.getType()=="B"){ //grab candy
           this.gotCandy++;
+          this.candiesCollected++;
           this.candies--;
           this.currentV.setType("o");
         }
       }
     }
-    for (int i=0;i<this.way.size();i++)
-      System.out.println(way.get(i));
+    if (currentV.getType()=="E")
+      this.foundExit=true;
+    //for (int i=0;i<this.way.size();i++)
+    //  System.out.println(way.get(i));
   }
 
   public void printMat(){

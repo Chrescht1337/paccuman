@@ -11,7 +11,7 @@ public class Edge{
     public Edge(Vertex target, Vertex origin_, ArrayList<int[]> way_){
     	this.origin = origin_;
 		this.target = target;
-		this.way = way_;
+		this.way = new ArrayList<int[]>(way_);
 	}
 
 	public Edge(){ // emptyEdge
@@ -48,6 +48,11 @@ public class Edge{
     txt.append(" - size : ");
     txt.append(this.way.size());
     return txt.toString();
+  }
+
+  private void printtt(ArrayList<int[]> otherWay){
+
+    System.out.println(otherWay);
   }
 
 	public ArrayList<int[]> shareWay(Edge e){
